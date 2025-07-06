@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import Employee, { IEmployee } from '../models/Employee';
 import PreviousStaff from '../models/PreviousStaff';
 import User from '../models/User';
-import { startOfDay } from 'date-fns';
+// Removed date-fns dependency
 import cron from 'node-cron';
 
 export const getAllEmployees = async (req: Request, res: Response): Promise<void> => {

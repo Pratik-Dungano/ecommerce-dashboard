@@ -31,11 +31,18 @@ Configure these in your Vercel project settings:
 
 ## Vercel Configuration
 
-The `vercel.json` file is already configured to:
-- Build the TypeScript code to `dist/` directory
-- Use `@vercel/node` runtime
-- Route all requests to the compiled server
-- Set function timeout to 30 seconds
+The `vercel.json` file is configured for serverless deployment:
+- Uses `src/serverless.ts` as the entry point
+- Routes all API requests to the serverless function
+- Sets function timeout to 30 seconds
+- Handles `/api/*`, `/health`, and catch-all routes
+
+## Serverless Deployment Notes
+
+- **WebSocket Support**: WebSocket functionality is disabled in serverless mode
+- **Real-time Updates**: Attendance updates will work via API calls but not real-time WebSocket events
+- **Database Connections**: MongoDB connections are handled per-request in serverless mode
+- **Static Files**: Static file serving is disabled for serverless deployment
 
 ## Deployment Steps
 

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import Task, { ITask } from '../models/Task';
 import { shouldEscalatePriority } from '../utils/priorityEscalation';
 import Employee from '../models/Employee';
-import { format } from 'date-fns';
+// Removed date-fns dependency, using native Date methods
 
 export const getAllTasks = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -331,7 +331,8 @@ export const getRevenue = async (req: Request, res: Response): Promise<void> => 
     const netRevenue = totalEarned - totalSalaryGiven;
 
     // Get current month data for additional info
-    const currentMonth = format(new Date(), 'yyyy-MM');
+    const now = new Date();
+    const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
     let currentMonthSalary = 0;
     let employeesPaidThisMonth = 0;
     

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Employee from '../models/Employee';
-import { startOfMonth, endOfMonth, format } from 'date-fns';
+// Removed date-fns dependency, using native Date methods
 
 export const getSalaryHistory = async (req: Request, res: Response) => {
   try {
@@ -25,7 +25,8 @@ export const getSalaryHistory = async (req: Request, res: Response) => {
     );
 
     // Calculate pending salary if any
-    const currentMonth = format(new Date(), 'yyyy-MM');
+    const now = new Date();
+    const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
     const hasPendingSalary = !sortedHistory.some(record => record.month === currentMonth);
     
     let pendingSalary = null;
@@ -93,7 +94,8 @@ export const paySalary = async (req: Request, res: Response) => {
       });
     }
 
-    const currentMonth = format(new Date(), 'yyyy-MM');
+    const now = new Date();
+    const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
     
     // Check if salary for current month is already paid
     const alreadyPaid = employee.salaryHistory.some(record => 
@@ -139,7 +141,8 @@ export const paySalary = async (req: Request, res: Response) => {
 
 export const getSalaryStats = async (req: Request, res: Response) => {
   try {
-    const currentMonth = format(new Date(), 'yyyy-MM');
+    const now = new Date();
+    const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
     
     // Get all employees
     const employees = await Employee.find({});
