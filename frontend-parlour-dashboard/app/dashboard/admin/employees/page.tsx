@@ -77,7 +77,7 @@ export default function AdminEmployeesPage() {
             <div>
               <p className="text-sm text-gray-600">Active Employees</p>
               <p className="text-2xl font-bold text-gray-800">
-                {employees.filter(emp => emp.status === 'active').length}
+                {employees.filter(emp => emp.isActive).length}
               </p>
             </div>
           </div>
