@@ -77,7 +77,7 @@ export function TaskCard({ task, onUpdate, onEdit, isReadOnly }: TaskCardProps) 
 
   const handleStatusChange = () => {
     const currentStatus = task.status as keyof typeof statusSequence;
-    if (statusSequence[currentStatus]) {
+    if (statusSequence[currentStatus] && onUpdate) {
       const nextStatus = statusSequence[currentStatus].next;
       onUpdate(task._id, { 
         status: nextStatus,
@@ -180,13 +180,13 @@ export function TaskCard({ task, onUpdate, onEdit, isReadOnly }: TaskCardProps) 
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onUpdate(task._id, { priority: 'low' })}>
+              <DropdownMenuItem onClick={() => onUpdate?.(task._id, { priority: 'low' })}>
                 🟢 Low Priority
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onUpdate(task._id, { priority: 'medium' })}>
+              <DropdownMenuItem onClick={() => onUpdate?.(task._id, { priority: 'medium' })}>
                 🟡 Medium Priority
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onUpdate(task._id, { priority: 'high' })}>
+              <DropdownMenuItem onClick={() => onUpdate?.(task._id, { priority: 'high' })}>
                 🔴 High Priority
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -255,7 +255,7 @@ export function TaskCard({ task, onUpdate, onEdit, isReadOnly }: TaskCardProps) 
                       <Button
                         variant="destructive"
                         size="sm"
-                        onClick={() => onUpdate(task._id, { status: 'cancelled' })}
+                        onClick={() => onUpdate?.(task._id, { status: 'cancelled' })}
                         className="bg-red-100 text-red-800 hover:bg-red-200"
                       >
                         Cancel

@@ -14,7 +14,7 @@ export const useUsers = () => {
       setIsLoading(true);
       setError(null);
       const response = await authAPI.getAllUsers();
-      if (response.success) {
+      if (response.success && response.data?.users) {
         setUsers(response.data.users);
       } else {
         setError(response.message || 'Failed to fetch users');
@@ -32,7 +32,7 @@ export const useUsers = () => {
       const response = await authAPI.updateUserRole(userId, role);
       if (response.success) {
         setUsers(prev => prev.map(user => 
-          user._id === userId ? { ...user, role } : user
+          user.id === userId ? { ...user, role } : user
         ));
         return { success: true };
       } else {
@@ -47,7 +47,7 @@ export const useUsers = () => {
     try {
       const response = await authAPI.deleteUser(userId);
       if (response.success) {
-        setUsers(prev => prev.filter(user => user._id !== userId));
+        setUsers(prev => prev.filter(user => user.id !== userId));
         return { success: true };
       } else {
         return { success: false, error: response.message || 'Failed to delete user' };

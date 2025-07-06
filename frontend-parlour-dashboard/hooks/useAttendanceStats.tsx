@@ -24,7 +24,11 @@ export const useAttendanceStats = () => {
       const response = await attendanceAPI.getAttendanceStats();
       
       if (response.success && response.data) {
-        setStats(response.data);
+        const { currentlyCheckedIn = 0, ...rest } = response.data as any;
+        setStats({
+          ...rest,
+          currentlyCheckedIn
+        });
       } else {
         setError(response.message || 'Failed to fetch attendance statistics');
       }

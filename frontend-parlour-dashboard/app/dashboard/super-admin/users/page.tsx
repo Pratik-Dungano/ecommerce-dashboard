@@ -74,7 +74,7 @@ export default function UserManagementPage() {
       const response = await authAPI.updateUserRole(userId, newRole);
       if (response.success && response.data?.user) {
         setUsers(users.map(user => 
-          user.id === userId ? response.data.user : user
+          user.id === userId ? response.data!.user : user
         ));
         toast({
           title: "Success",

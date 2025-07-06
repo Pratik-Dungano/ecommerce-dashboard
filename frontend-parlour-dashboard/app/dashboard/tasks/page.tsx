@@ -254,7 +254,7 @@ const TasksPage = () => {
       {/* Status Update Buttons */}
       {isSuper && task.status !== 'completed' && task.status !== 'cancelled' && (
         <div className="grid grid-cols-2 gap-2 mb-4">
-          {task.status === 'pending' && (
+          {task.status === 'assigned' && (
             <button
               onClick={() => handleStatusChange(task._id, 'in_progress')}
               className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-xl transition-all duration-300"
@@ -364,7 +364,7 @@ const TasksPage = () => {
               </div>
               <div>
                 <p className="text-2xl font-bold text-gray-900">
-                  {tasks.filter(task => task.status === 'pending').length}
+                  {tasks.filter(task => task.status === 'assigned').length}
                 </p>
                 <p className="text-sm text-gray-600">Pending</p>
               </div>

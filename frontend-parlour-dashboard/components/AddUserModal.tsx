@@ -40,8 +40,8 @@ export function AddUserModal({ isOpen, onClose, onSuccess, defaultRole = 'employ
         email: formData.email,
         password: formData.password,
         role: formData.role,
+        phone: formData.phone || '',
         ...(formData.role === 'employee' && {
-          phone: formData.phone,
           position: formData.position,
           department: formData.department,
         }),
