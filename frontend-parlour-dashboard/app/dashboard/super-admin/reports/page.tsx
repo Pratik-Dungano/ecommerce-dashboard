@@ -376,7 +376,7 @@ export default function ReportsPage() {
             <div>
               <p className="text-sm text-gray-600">Total Tasks</p>
               <p className="text-xl font-bold text-gray-800">
-                {taskAnalytics?.statusDistribution?.reduce((sum, status) => sum + status.count, 0) || 0}
+                {taskAnalytics?.statusDistribution?.reduce((sum: number, status: any) => sum + status.count, 0) || 0}
               </p>
             </div>
           </div>
