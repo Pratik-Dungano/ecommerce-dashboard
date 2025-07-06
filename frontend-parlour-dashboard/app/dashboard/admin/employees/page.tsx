@@ -121,7 +121,7 @@ export default function AdminEmployeesPage() {
               onDelete={() => {}}
               onEmployeeUpdate={fetchEmployees}
               isSuperAdmin={false}
-              readOnly={true}
+              isReadOnly={true}
             />
           </motion.div>
         ))}
