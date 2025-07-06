@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parlour WebSocket Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .log { background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 10px 0; max-height: 400px; overflow-y: auto; }
+        .message { margin: 5px 0; padding: 5px; border-left: 3px solid #007bff; }
+        .attendance-update { border-left-color: #28a745; background: #d4edda; }
+        .error { border-left-color: #dc3545; background: #f8d7da; }
+        button { padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .connected { background: #d4edda; color: #155724; }
+        .disconnected { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏪 Parlour WebSocket Test</h1>
+        <div id="status" class="status disconnected">❌ Not Connected</div>
+        
+        <div>
+            <button onclick="connect()">Connect to WebSocket</button>
+            <button onclick="disconnect()">Disconnect</button>
+            <button onclick="clearLog()">Clear Log</button>
+        </div>
+
+        <h3>📊 Real-time Attendance Updates</h3>
+        <div id="log" class="log">
+            <div class="message">Waiting for WebSocket connection...</div>
+        </div>
+
+        <h3>🧪 Test Actions</h3>
+        <p>Use PowerShell to trigger attendance updates and watch them appear here in real-time!</p>
+        <pre><code>
+# Punch in employee:
+$punchInBody = '{"employeeId":"YOUR_EMPLOYEE_ID","action":"punch_in"}'
+Invoke-RestMethod -Uri "http://localhost:5000/api/attendance/punch" -Method POST -Body $punchInBody -ContentType "application/json"
+
+# Punch out employee:
+$punchOutBody = '{"employeeId":"YOUR_EMPLOYEE_ID","action":"punch_out"}'
+Invoke-RestMethod -Uri "http://localhost:5000/api/attendance/punch" -Method POST -Body $punchOutBody -ContentType "application/json"
+        </code></pre>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = null;
+        const log = document.getElementById('log');
+        const status = document.getElementById('status');
+
+        function addMessage(message, type = 'message') {
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function updateStatus(connected) {
+            if (connected) {
+                status.className = 'status connected';
+                status.innerHTML = '✅ Connected to Parlour WebSocket';
+            } else {
+                status.className = 'status disconnected';
+                status.innerHTML = '❌ Disconnected from WebSocket';
+            }
+        }
+
+        function connect() {
+            if (socket) {
+                addMessage('Already connected!', 'error');
+                return;
+            }
+
+            addMessage('🔗 Connecting to WebSocket...');
+            
+            socket = io('http://localhost:5000', {
+                auth: {
+                    // Add token here if needed for authenticated connections
+                    // token: 'YOUR_JWT_TOKEN'
+                }
+            });
+
+            socket.on('connect', () => {
+                addMessage('✅ Connected to Parlour WebSocket Server!');
+                updateStatus(true);
+                
+                // Subscribe to attendance updates
+                socket.emit('subscribe_attendance');
+                addMessage('📊 Subscribed to live attendance updates');
+            });
+
+            socket.on('disconnect', (reason) => {
+                addMessage(`❌ Disconnected: ${reason}`, 'error');
+                updateStatus(false);
+            });
+
+            socket.on('attendance_update', (data) => {
+                const employee = data.data.employee;
+                const action = data.data.action;
+                const time = new Date(data.data.timestamp).toLocaleString();
+                
+                addMessage(`🎯 ${employee.name} - ${action.toUpperCase()} at ${time}`, 'attendance-update');
+            });
+
+            socket.on('employee_update', (data) => {
+                addMessage(`👥 Employee updated: ${JSON.stringify(data)}`, 'attendance-update');
+            });
+
+            socket.on('task_update', (data) => {
+                addMessage(`📋 Task updated: ${JSON.stringify(data)}`, 'attendance-update');
+            });
+
+            socket.on('error', (error) => {
+                addMessage(`❌ Error: ${error.message}`, 'error');
+            });
+        }
+
+        function disconnect() {
+            if (socket) {
+                socket.disconnect();
+                socket = null;
+                addMessage('👋 Disconnected from WebSocket');
+                updateStatus(false);
+            } else {
+                addMessage('Not connected!', 'error');
+            }
+        }
+
+        function clearLog() {
+            log.innerHTML = '<div class="message">Log cleared...</div>';
+        }
+
+        // Auto-connect on page load
+        window.onload = () => {
+            addMessage('🏪 Parlour WebSocket Test Ready!');
+            addMessage('Click "Connect to WebSocket" to start monitoring real-time updates');
+        };
+    </script>
+</body>
+</html> 
