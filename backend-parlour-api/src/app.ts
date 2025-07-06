@@ -31,8 +31,8 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Trust proxy for IP address
 app.set('trust proxy', true);
 
-// Serve static files (for WebSocket test page)
-app.use(express.static(path.join(__dirname, '../')));
+// Serve static files (for WebSocket test page) - disabled in serverless
+// app.use(express.static(path.join(__dirname, '../')));
 
 // Health check route
 app.get('/health', (req, res) => {
