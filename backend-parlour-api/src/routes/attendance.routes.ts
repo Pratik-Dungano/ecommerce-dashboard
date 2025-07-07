@@ -6,6 +6,7 @@ import {
   getTodaysAttendance,
   getAttendanceStats,
   getMyAttendance,
+  cleanupAttendanceLogsForAdmin,
 } from '../controllers/attendance.controller';
 import { authenticateToken } from '../middleware/auth';
 import { requireAdminOrSuperAdmin } from '../middleware/roleCheck';
@@ -23,5 +24,8 @@ router.get('/employee/:employeeId', authenticateToken, requireAdminOrSuperAdmin,
 
 // Route for employees to get their own attendance
 router.get('/my-attendance', authenticateToken, getMyAttendance);
+
+// Route for admin to cleanup attendance logs at 12 am
+router.delete('/cleanup', authenticateToken, requireAdminOrSuperAdmin, cleanupAttendanceLogsForAdmin);
 
 export default router;

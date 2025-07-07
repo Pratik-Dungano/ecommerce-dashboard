@@ -289,7 +289,7 @@ export const getAttendanceStats = async (req: Request, res: Response): Promise<v
       message: 'Internal server error',
     });
   }
-};
+}; 
 
 export const getMyAttendance = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -330,6 +330,28 @@ export const getMyAttendance = async (req: Request, res: Response): Promise<void
     });
   } catch (error: any) {
     console.error('Get my attendance error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
+  }
+}; 
+
+// Delete all attendance logs at 12 am (for admin dashboard)
+export const cleanupAttendanceLogsForAdmin = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Today 12:00 AM
+    // Delete all attendance records before today (i.e., up to yesterday 11:59 PM)
+    const result = await Attendance.deleteMany({
+      timestamp: { $lt: now }
+    });
+    res.status(200).json({
+      success: true,
+      message: `Deleted ${result.deletedCount} attendance logs before today.`
+    });
+  } catch (error: any) {
+    console.error('Attendance cleanup for admin error:', error);
     res.status(500).json({
       success: false,
       message: 'Internal server error',

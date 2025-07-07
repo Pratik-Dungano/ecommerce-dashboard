@@ -122,9 +122,30 @@ export const scheduleAttendanceCleanup = () => {
   });
 };
 
+// Delete all attendance logs at 12 AM (for admin dashboard)
+export const scheduleAdminAttendanceCleanup = () => {
+  cron.schedule('0 0 * * *', async () => { // Runs at 12:00 AM every day
+    try {
+      console.log('Starting admin attendance cleanup (12 AM)...');
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Today 12:00 AM
+      // Delete all attendance records before today
+      const result = await Attendance.deleteMany({
+        timestamp: { $lt: today }
+      });
+      console.log(`Admin attendance cleanup completed. Deleted ${result.deletedCount} records.`);
+    } catch (error) {
+      console.error('Error in admin attendance cleanup:', error);
+    }
+  }, {
+    timezone: "Asia/Kolkata" // Adjust timezone as needed
+  });
+};
+
 // Initialize all schedulers
 export const initializeSchedulers = () => {
   scheduleDailyAttendanceBackup();
   scheduleAttendanceCleanup();
+  scheduleAdminAttendanceCleanup();
   console.log('Attendance schedulers initialized');
 }; 

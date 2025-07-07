@@ -1,7 +1,7 @@
 import { createServer } from 'http';
 import app from './app';
 import { setupAttendanceSocket } from './sockets/attendanceSocket';
-import { initializeSchedulers } from './utils/scheduler';
+import { initializeSchedulers, scheduleAdminAttendanceCleanup } from './utils/scheduler';
 import { Server } from 'socket.io';
 import connectDB from './config/db';
 
@@ -17,6 +17,9 @@ const startServer = async () => {
 
     // Initialize schedulers
     initializeSchedulers();
+
+    // Run admin attendance cleanup once immediately (one-time manual trigger)
+    scheduleAdminAttendanceCleanup();
 
     // Setup WebSocket
     const io = new Server(httpServer, {

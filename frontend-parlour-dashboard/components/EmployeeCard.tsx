@@ -395,13 +395,13 @@ export function EmployeeCard({ employee, onEdit, isReadOnly, onDelete, onEmploye
                         </Button>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-2">
-                        <p className="text-gray-900 font-medium">
-                          Monthly Salary: {formatSalary(salaryHistory.employee.salary)}
-                          {(!salaryHistory.employee.salary || salaryHistory.employee.salary === 0) && (
-                            <span className="text-sm text-gray-500 ml-2">(Not set)</span>
-                          )}
-                        </p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-gray-900 font-medium">
+                      Monthly Salary: {formatSalary(salaryHistory.employee.salary)}
+                      {(!salaryHistory.employee.salary || salaryHistory.employee.salary === 0) && (
+                        <span className="text-sm text-gray-500 ml-2">(Not set)</span>
+                      )}
+                    </p>
                         {isSuperAdmin && (
                           <Button
                             size="sm"

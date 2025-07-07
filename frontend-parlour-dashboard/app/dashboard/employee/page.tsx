@@ -124,16 +124,16 @@ export default function EmployeeDashboard() {
         {quickActions.map((action, index) => (
           <Link key={index} href={action.link}>
             <Card className="p-6 border-none shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer">
-              <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center mb-4">
-                <span className="text-2xl">{action.icon}</span>
-              </div>
-              <h3 className="text-gray-800 font-semibold">
-                {action.title}
-              </h3>
-              <p className="text-gray-600 text-sm mt-2">
-                {action.description}
-              </p>
-            </Card>
+            <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center mb-4">
+              <span className="text-2xl">{action.icon}</span>
+            </div>
+            <h3 className="text-gray-800 font-semibold">
+              {action.title}
+            </h3>
+            <p className="text-gray-600 text-sm mt-2">
+              {action.description}
+            </p>
+          </Card>
           </Link>
         ))}
       </div>
