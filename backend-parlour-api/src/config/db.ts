@@ -5,6 +5,10 @@ dotenv.config();
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
+if (!MONGODB_URI) {
+  throw new Error('MONGODB_URI environment variable is not set. Please set it in your environment variables.');
+}
+
 const connectDB = async (): Promise<void> => {
   try {
     console.log('Connecting to MongoDB Atlas...');
