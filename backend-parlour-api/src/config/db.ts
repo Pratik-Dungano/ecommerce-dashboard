@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://pratik:zenitsu@cluster0.4smyu.mongodb.net/parlour-db?retryWrites=true&w=majority';
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const connectDB = async (): Promise<void> => {
   try {
