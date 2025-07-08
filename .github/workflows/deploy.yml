@@ -29,16 +29,16 @@ jobs:
           node-version: lts/*
 
       - name: Install step
-        run: "npm install"
+        run: "pnpm install"
 
       - name: Build step
-        run: "npm run build"
+        run: "pnpm run dev"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: "parlour-buddy-client"
           entrypoint: "jsr:@deno/nextjs-start/v15"
-          root: "./backend-parlour-api"
+          root: "/backend-parlour-api"
           
           
