@@ -40,5 +40,5 @@ jobs:
           project: "parlour-buddy-client"
           entrypoint: "jsr:@deno/nextjs-start/v15"
           root: "./backend-parlour-api"
-          include: .next, public
+          
           
