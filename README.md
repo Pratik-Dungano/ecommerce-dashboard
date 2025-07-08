@@ -118,27 +118,6 @@ cd ../frontend-parlour-dashboard
 npm install
 ```
 
-### 3. Configure Environment Variables
-
-#### Backend (`backend-parlour-api/.env`)
-
-See `backend-parlour-api/ENVIRONMENT_VARIABLES.md` for details. Example:
-
-```
-MONGODB_URI=your-mongodb-uri
-JWT_SECRET=your-jwt-secret
-JWT_EXPIRES_IN=7d
-FRONTEND_URL=http://localhost:3000
-PORT=5000
-NODE_ENV=development
-```
-
-#### Frontend (`frontend-parlour-dashboard/.env.local`)
-
-```
-NEXT_PUBLIC_API_URL=http://localhost:5000
-```
-
 ### 4. Run the Applications
 
 #### Backend (in `backend-parlour-api`)
@@ -152,35 +131,6 @@ npm run dev
 ```bash
 npm run dev
 ```
-
----
-
-## 🌐 Environment Variables (Backend)
-
-- `MONGODB_URI`: MongoDB connection string
-- `JWT_SECRET`: Secret for JWT signing
-- `JWT_EXPIRES_IN`: JWT token expiry (e.g., 7d)
-- `FRONTEND_URL`: Frontend URL for CORS
-- `PORT`: Backend server port
-- `NODE_ENV`: `development` or `production`
-
-## 🌐 Environment Variables (Frontend)
-
-- `NEXT_PUBLIC_API_URL`: Backend API base URL
-
----
-
-## 🧑‍💼 Demo Credentials
-
-### Super Admin (Full Access)
-
-- **Email:** manager@parlour.com
-- **Password:** manager123
-
-### Admin (Read-Only)
-
-- **Email:** admin@parlour.com
-- **Password:** admin123
 
 ---
 
